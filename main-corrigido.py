@@ -343,8 +343,22 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
     jogo = conn.execute("SELECT * FROM jogos WHERE id = ?", (dados.jogo_id,)).fetchone()
     if not jogo:
         raise HTTPException(status_code=404, detail="Jogo não encontrado.")
+    # Bloqueia se jogo encerrado manualmente
     if jogo["encerrado"]:
-        raise HTTPException(status_code=400, detail="Este jogo já foi encerrado. Palpites fechados!")
+        raise HTTPException(
+            status_code=400,
+            detail="Este jogo já foi encerrado. Palpites fechados!"
+    )
+
+    # Bloqueia automaticamente pelo horário
+    data_jogo = datetime.strptime(jogo["data_jogo"], "%Y-%m-%d %H:%M")
+
+    if datetime.now() >= data_jogo:
+         raise HTTPException(
+            status_code=400,
+            detail="O jogo já começou. Palpites encerrados!"
+    )
+        
 
     # INSERT OR REPLACE: cria novo palpite ou substitui o existente
     conn.execute("""
