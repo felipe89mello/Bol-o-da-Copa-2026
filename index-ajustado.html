@@ -791,6 +791,9 @@ function renderizarJogos(jogos) {
 function renderizarJogo(jogo) {
   const temPalpite = jogo.meu_palpite !== null;
   const encerrado = jogo.encerrado;
+  const agora = new Date();
+  const horarioJogo = new Date(jogo.data_jogo.replace(" ", "T"));
+  const bloqueado = agora >= horarioJogo;
 
   const placarCentro = encerrado
     ? `<div class="placar-real"><div class="nums">${jogo.gols_casa} × ${jogo.gols_fora}</div><div style="font-size:10px;color:var(--text2);margin-top:2px">Resultado</div></div>`
