@@ -369,11 +369,13 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
         "%Y-%m-%d %H:%M"
     )
 
-    if datetime.now() >= data_jogo:
+    horario_limite = data_jogo - timedelta(minutes=5)
+
+    if datetime.now() >= horario_limite:
         raise HTTPException(
             status_code=400,
-            detail="O jogo já começou. Palpites encerrados!"
-        )
+            detail="Palpites encerrados 5 minutos antes do jogo!"
+    )
 
     # Salvar palpite
     conn.execute("""
