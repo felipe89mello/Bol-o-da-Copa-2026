@@ -849,22 +849,76 @@ const horarioLimite = new Date(
     ? `<div class="placar-real"><div class="nums">${jogo.gols_casa} × ${jogo.gols_fora}</div><div style="font-size:10px;color:var(--text2);margin-top:2px">Resultado</div></div>`
     : `<div class="placar-real"><div class="vs">VS</div></div>`;
 
-  const inputsOuPlacar = encerrado
-    ? (temPalpite ? `
-        <div style="text-align:center">
-          <div style="font-size:13px;color:var(--text2)">Seu palpite: <strong>${jogo.meu_palpite.casa} × ${jogo.meu_palpite.fora}</strong></div>
-          <span class="pontos-badge">+${jogo.meu_palpite.pontos} pts</span>
-        </div>` : `<p style="font-size:13px;color:var(--text2);text-align:center">Você não fez palpite neste jogo.</p>`)
-    : `
-      <div class="palpite-label" style="text-align:center">Seu palpite</div>
-      <div class="palpite-inputs">
-        <input class="input-placar" type="number" min="0" max="20" value="${temPalpite ? jogo.meu_palpite.casa : 0}" id="casa-${jogo.id}" />
-        <span class="x-palpite">×</span>
-        <input class="input-placar" type="number" min="0" max="20" value="${temPalpite ? jogo.meu_palpite.fora : 0}" id="fora-${jogo.id}" />
-      </div>
-      <button class="btn-palpitar ${temPalpite ? 'salvo' : ''}" id="btn-${jogo.id}" onclick="enviarPalpite(${jogo.id})" style="margin-top:12px">
-        ${temPalpite ? '✅ Palpite salvo — alterar' : '🎯 Salvar palpite'}
-      </button>`;
+  const inputsOuPlacar =
+  encerrado
+    ? (
+        temPalpite
+          ? `
+            <div style="text-align:center">
+              <div style="font-size:13px;color:var(--text2)">
+                Seu palpite:
+                <strong>
+                  ${jogo.meu_palpite.casa} × ${jogo.meu_palpite.fora}
+                </strong>
+              </div>
+
+              <span class="pontos-badge">
+                +${jogo.meu_palpite.pontos} pts
+              </span>
+            </div>
+          `
+          : `
+            <p style="font-size:13px;color:var(--text2);text-align:center">
+              Você não fez palpite neste jogo.
+            </p>
+          `
+      )
+
+    : bloqueado
+      ? `
+          <div class="palpite-encerrado">
+            ⛔ Palpites encerrados
+          </div>
+        `
+
+      : `
+          <div class="palpite-label" style="text-align:center">
+            Seu palpite
+          </div>
+
+          <div class="palpite-inputs">
+            <input
+              class="input-placar"
+              type="number"
+              min="0"
+              max="20"
+              value="${temPalpite ? jogo.meu_palpite.casa : 0}"
+              id="casa-${jogo.id}"
+            />
+
+            <span class="x-palpite">×</span>
+
+            <input
+              class="input-placar"
+              type="number"
+              min="0"
+              max="20"
+              value="${temPalpite ? jogo.meu_palpite.fora : 0}"
+              id="fora-${jogo.id}"
+            />
+          </div>
+
+          <button
+            class="btn-palpitar ${temPalpite ? 'salvo' : ''}"
+            id="btn-${jogo.id}"
+            onclick="enviarPalpite(${jogo.id})"
+            style="margin-top:12px"
+          >
+            ${temPalpite
+              ? '✅ Palpite salvo — alterar'
+              : '🎯 Salvar palpite'}
+          </button>
+        `;
 
   return `
   <div class="jogo-card ${temPalpite ? 'com-palpite' : ''} ${encerrado ? 'encerrado' : ''}" id="card-${jogo.id}">
