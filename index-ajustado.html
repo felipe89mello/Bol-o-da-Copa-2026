@@ -793,7 +793,18 @@ function renderizarJogo(jogo) {
   const encerrado = jogo.encerrado;
   const agora = new Date();
   const horarioJogo = new Date(jogo.data_jogo.replace(" ", "T"));
-  const bloqueado = agora >= horarioJogo;
+  const diferenca = horarioJogo - agora;
+
+  const horas = Math.floor(diferenca / (1000 * 60 * 60));
+  const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+  const bloqueado = diferenca <= 0;
+
+  const countdown =
+    !bloqueado
+      ? `⏳ Fecha em ${horas}h ${minutos}min`
+      : "⛔ Palpites encerrados";
+
+  
 
   const placarCentro = encerrado
     ? `<div class="placar-real"><div class="nums">${jogo.gols_casa} × ${jogo.gols_fora}</div><div style="font-size:10px;color:var(--text2);margin-top:2px">Resultado</div></div>`
