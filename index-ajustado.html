@@ -808,7 +808,13 @@ function renderizarJogo(jogo) {
   const temPalpite = jogo.meu_palpite !== null;
   const encerrado = jogo.encerrado;
   const agora = new Date();
-  const horarioJogo = new Date(jogo.data_jogo.replace(" ", "T"));
+  const horarioJogo = new Date(jogo.data_jogo.replace(" ", "T")
+);
+
+// bloqueia 5 minutos antes
+const horarioLimite = new Date(
+  horarioJogo.getTime() - (5 * 60 * 1000)
+);
   const diferenca = horarioJogo - agora;
 
   const horas = Math.floor(diferenca / (1000 * 60 * 60));
