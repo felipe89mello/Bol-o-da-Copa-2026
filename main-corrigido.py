@@ -26,7 +26,7 @@ from typing import Optional
 import sqlite3
 import hashlib
 from jose import jwt
-import datetime
+from datetime import datetime, timedelta
 import os
 
 # ─────────────────────────────────────────
@@ -145,7 +145,7 @@ def criar_token(usuario_id: int, email: str) -> str:
     payload = {
         "sub": str(usuario_id),
         "email": email,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
+        "exp": datetime.utcnow() + timedelta(days=7)
     }
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
@@ -340,38 +340,63 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
     """
     conn = get_db()
 
-    jogo = conn.execute("SELECT * FROM jogos WHERE id = ?", (dados.jogo_id,)).fetchone()
+    jogo = conn.execute(
+        "SELECT * FROM jogos WHERE id = ?",
+        (dados.jogo_id,)
+    ).fetchone()
+
     if not jogo:
-        raise HTTPException(status_code=404, detail="Jogo não encontrado.")
-    # Bloqueia se jogo encerrado manualmente
+        raise HTTPException(
+            status_code=404,
+            detail="Jogo não encontrado."
+        )
+
+    # Bloqueio manual
     if jogo["encerrado"]:
         raise HTTPException(
             status_code=400,
-            detail="Este jogo já foi encerrado. Palpites fechados!"
-    )
+            detail="Este jogo já foi encerrado."
+        )
 
-    # Bloqueia automaticamente pelo horário
-    data_jogo = datetime.strptime(jogo["data_jogo"], "%Y-%m-%d %H:%M")
+    # Bloqueio automático por horário
+    data_jogo = datetime.strptime(
+        jogo["data_jogo"],
+        "%Y-%m-%d %H:%M"
+    )
 
     if datetime.now() >= data_jogo:
-         raise HTTPException(
+        raise HTTPException(
             status_code=400,
             detail="O jogo já começou. Palpites encerrados!"
-    )
-        
+        )
 
-    # INSERT OR REPLACE: cria novo palpite ou substitui o existente
+    # Salvar palpite
     conn.execute("""
-        INSERT INTO palpites (usuario_id, jogo_id, palpite_casa, palpite_fora)
+        INSERT INTO palpites (
+            usuario_id,
+            jogo_id,
+            palpite_casa,
+            palpite_fora
+        )
         VALUES (?, ?, ?, ?)
+
         ON CONFLICT(usuario_id, jogo_id)
-        DO UPDATE SET palpite_casa = excluded.palpite_casa,
-                      palpite_fora = excluded.palpite_fora
-    """, (usuario["sub"], dados.jogo_id, dados.palpite_casa, dados.palpite_fora))
+        DO UPDATE SET
+            palpite_casa = excluded.palpite_casa,
+            palpite_fora = excluded.palpite_fora
+    """, (
+        usuario["sub"],
+        dados.jogo_id,
+        dados.palpite_casa,
+        dados.palpite_fora
+    ))
+
     conn.commit()
     conn.close()
 
-    return {"mensagem": "✅ Palpite registrado com sucesso!"}
+    return {
+        "mensagem": "✅ Palpite registrado com sucesso!"
+    }
 
 
 @app.post("/resultado")
