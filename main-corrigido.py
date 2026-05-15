@@ -27,6 +27,7 @@ import sqlite3
 import hashlib
 from jose import jwt
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 import os
 
 # ─────────────────────────────────────────
@@ -371,7 +372,7 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
 
     horario_limite = data_jogo - timedelta(minutes=5)
 
-    if datetime.now() >= horario_limite:
+    if datetime.now(ZoneInfo("America/Sao_Paulo")) >= horario_limite:
         raise HTTPException(
             status_code=400,
             detail="Palpites encerrados 5 minutos antes do jogo!"
