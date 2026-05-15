@@ -803,7 +803,7 @@ function renderizarJogo(jogo) {
     !bloqueado
       ? `⏳ Fecha em ${horas}h ${minutos}min`
       : "⛔ Palpites encerrados";
-
+}
   
 
   const placarCentro = encerrado
@@ -828,23 +828,38 @@ function renderizarJogo(jogo) {
       </button>`;
 
   return `
-    <div class="jogo-card ${temPalpite ? 'com-palpite' : ''} ${encerrado ? 'encerrado' : ''}" id="card-${jogo.id}">
-      <div class="jogo-fase">${jogo.fase} ${encerrado ? '• Encerrado' : ''}</div>
-      <div class="jogo-data">📅 ${jogo.data_jogo}</div>
-      <div class="jogo-times">
-        <div class="time">
-          <span class="time-emoji">${bandeira(jogo.time_casa)}</span>
-          <div class="time-nome">${jogo.time_casa}</div>
-        </div>
-        ${placarCentro}
-        <div class="time">
-          <span class="time-emoji">${bandeira(jogo.time_fora)}</span>
-          <div class="time-nome">${jogo.time_fora}</div>
-        </div>
+  <div class="jogo-card ${temPalpite ? 'com-palpite' : ''} ${encerrado ? 'encerrado' : ''}" id="card-${jogo.id}">
+    
+    <div class="jogo-fase">
+      ${jogo.fase} ${encerrado ? '• Encerrado' : ''}
+    </div>
+
+    <div class="jogo-data">
+      📅 ${jogo.data_jogo}
+    </div>
+
+    <div class="countdown">
+      ${countdown}
+    </div>
+
+    <div class="jogo-times">
+      <div class="time">
+        <span class="time-emoji">${bandeira(jogo.time_casa)}</span>
+        <div class="time-nome">${jogo.time_casa}</div>
       </div>
-      ${inputsOuPlacar}
-    </div>`;
-}
+
+      ${placarCentro}
+
+      <div class="time">
+        <span class="time-emoji">${bandeira(jogo.time_fora)}</span>
+        <div class="time-nome">${jogo.time_fora}</div>
+      </div>
+    </div>
+
+    ${inputsOuPlacar}
+
+  </div>
+`;
 
 /* ══════════════════════════════════════════
    ENVIAR PALPITE
