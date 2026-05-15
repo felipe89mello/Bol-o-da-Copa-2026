@@ -815,7 +815,7 @@ function renderizarJogo(jogo) {
 const horarioLimite = new Date(
   horarioJogo.getTime() - (5 * 60 * 1000)
 );
-  const diferenca = horarioJogo - agora;
+  const diferenca = horarioLimite - agora;
 
   const horas = Math.floor(diferenca / (1000 * 60 * 60));
   const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
