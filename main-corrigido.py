@@ -368,7 +368,7 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
     data_jogo = datetime.strptime(
         jogo["data_jogo"],
         "%Y-%m-%d %H:%M"
-    )
+    ).replace(tzinfo=ZoneInfo("America/Sao_Paulo"))
 
     horario_limite = data_jogo - timedelta(minutes=5)
 
