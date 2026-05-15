@@ -189,6 +189,11 @@ class ResultadoInput(BaseModel):
     gols_casa: int
     gols_fora: int
 
+class JogoInput(BaseModel):
+    time_casa: str
+    time_fora: str
+    data_jogo: str
+    fase: str
 
 # ─────────────────────────────────────────
 # SISTEMA DE PONTUAÇÃO
@@ -398,6 +403,46 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
         "mensagem": "✅ Palpite registrado com sucesso!"
     }
 
+@app.post("/jogo")
+def criar_jogo(
+    dados: JogoInput,
+    usuario=Depends(verificar_token)
+):
+    conn = get_db()
+
+    # Verifica admin
+    user = conn.execute(
+        "SELECT * FROM usuarios WHERE id = ?",
+        (usuario["sub"],)
+    ).fetchone()
+
+    if not user["is_admin"]:
+        raise HTTPException(
+            status_code=403,
+            detail="Apenas admins podem criar jogos."
+        )
+
+    conn.execute("""
+        INSERT INTO jogos (
+            time_casa,
+            time_fora,
+            data_jogo,
+            fase
+        )
+        VALUES (?, ?, ?, ?)
+    """, (
+        dados.time_casa,
+        dados.time_fora,
+        dados.data_jogo,
+        dados.fase
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "mensagem": "✅ Jogo criado com sucesso!"
+    }
 
 @app.post("/resultado")
 def registrar_resultado(dados: ResultadoInput, usuario=Depends(verificar_token)):
