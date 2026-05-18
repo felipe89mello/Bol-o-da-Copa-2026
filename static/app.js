@@ -181,26 +181,79 @@ async function carregarJogos() {
 
 // Emojis de bandeira por país (simplificado)
 const bandeiras = {
+
+  // AMÉRICA DO SUL
   "Brasil": "https://flagcdn.com/w80/br.png",
   "Argentina": "https://flagcdn.com/w80/ar.png",
+  "Uruguai": "https://flagcdn.com/w80/uy.png",
+  "Colômbia": "https://flagcdn.com/w80/co.png",
+  "Equador": "https://flagcdn.com/w80/ec.png",
+  "Paraguai": "https://flagcdn.com/w80/py.png",
+
+  // AMÉRICA DO NORTE
+  "EUA": "https://flagcdn.com/w80/us.png",
+  "Estados Unidos": "https://flagcdn.com/w80/us.png",
+  "Canadá": "https://flagcdn.com/w80/ca.png",
+  "México": "https://flagcdn.com/w80/mx.png",
+  "Panamá": "https://flagcdn.com/w80/pa.png",
+  "Curaçao": "https://flagcdn.com/w80/cw.png",
+  "Haiti": "https://flagcdn.com/w80/ht.png",
+
+  // EUROPA
   "França": "https://flagcdn.com/w80/fr.png",
   "Alemanha": "https://flagcdn.com/w80/de.png",
   "Espanha": "https://flagcdn.com/w80/es.png",
   "Portugal": "https://flagcdn.com/w80/pt.png",
-  "Inglaterra": "https://flagcdn.com/w80/gb-eng.png",
-  "Itália": "https://flagcdn.com/w80/it.png",
-  "Japão": "https://flagcdn.com/w80/jp.png",
-  "Coreia do Sul": "https://flagcdn.com/w80/kr.png",
-  "México": "https://flagcdn.com/w80/mx.png",
-  "EUA": "https://flagcdn.com/w80/us.png",
-  "Canadá": "https://flagcdn.com/w80/ca.png",
-  "Uruguai": "https://flagcdn.com/w80/uy.png",
-  "Colômbia": "https://flagcdn.com/w80/co.png",
   "Holanda": "https://flagcdn.com/w80/nl.png",
   "Bélgica": "https://flagcdn.com/w80/be.png",
   "Croácia": "https://flagcdn.com/w80/hr.png",
-  "Senegal": "https://flagcdn.com/w80/sn.png",
+  "Suíça": "https://flagcdn.com/w80/ch.png",
+  "Polônia": "https://flagcdn.com/w80/pl.png",
+  "Suécia": "https://flagcdn.com/w80/se.png",
+  "Noruega": "https://flagcdn.com/w80/no.png",
+  "Áustria": "https://flagcdn.com/w80/at.png",
+  "Turquia": "https://flagcdn.com/w80/tr.png",
+  "República Tcheca": "https://flagcdn.com/w80/cz.png",
+  "Republica Tcheca": "https://flagcdn.com/w80/cz.png",
+  "Bósnia e Herzegovina": "https://flagcdn.com/w80/ba.png",
+  "Bosnia e Herzegovina": "https://flagcdn.com/w80/ba.png",
+
+  // REINO UNIDO
+  "Inglaterra": "https://flagcdn.com/w80/gb-eng.png",
+  "Escócia": "https://flagcdn.com/w80/gb-sct.png",
+
+  // ÁFRICA
   "Marrocos": "https://flagcdn.com/w80/ma.png",
+  "Senegal": "https://flagcdn.com/w80/sn.png",
+  "Gana": "https://flagcdn.com/w80/gh.png",
+  "Tunísia": "https://flagcdn.com/w80/tn.png",
+  "Egito": "https://flagcdn.com/w80/eg.png",
+  "Argélia": "https://flagcdn.com/w80/dz.png",
+  "África do Sul": "https://flagcdn.com/w80/za.png",
+  "Cabo Verde": "https://flagcdn.com/w80/cv.png",
+  "Costa do Marfim": "https://flagcdn.com/w80/ci.png",
+  "RD Congo": "https://flagcdn.com/w80/cd.png",
+  "República Democrática do Congo": "https://flagcdn.com/w80/cd.png",
+  "Republica Democratica do Congo": "https://flagcdn.com/w80/cd.png",
+
+
+  // ÁSIA
+  "Japão": "https://flagcdn.com/w80/jp.png",
+  "Coreia do Sul": "https://flagcdn.com/w80/kr.png",
+  "Arábia Saudita": "https://flagcdn.com/w80/sa.png",
+  "Irã": "https://flagcdn.com/w80/ir.png",
+  "Qatar": "https://flagcdn.com/w80/qa.png",
+  "Austrália": "https://flagcdn.com/w80/au.png",
+  "Iraque": "https://flagcdn.com/w80/iq.png",
+  "Jordânia": "https://flagcdn.com/w80/jo.png",
+  "Jordania": "https://flagcdn.com/w80/jo.png",
+  "Uzbequistão": "https://flagcdn.com/w80/uz.png",
+  "Uzbequistao": "https://flagcdn.com/w80/uz.png",
+
+
+  // OCEANIA
+  "Nova Zelândia": "https://flagcdn.com/w80/nz.png",
+
 };
 
 function bandeira(pais) {
