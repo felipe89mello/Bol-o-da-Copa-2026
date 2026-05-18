@@ -602,37 +602,51 @@ async function abrirPalpitesUsuario(usuarioId) {
     `;
   }
 
-  return `
-    <div class="palpite-card">
+ return `
+  <div class="palpite-card">
 
-      <div>
-        ${p.time_casa} × ${p.time_fora}
-      </div>
-
-      <div style="margin-top:8px">
-        Palpite:
-        <strong>
-          ${p.palpite_casa} × ${p.palpite_fora}
-        </strong>
-      </div>
+    <div class="palpite-topo">
+      <span class="fase-badge">
+        ${p.fase}
+      </span>
 
       ${
         p.encerrado
-          ? `
-            <div>
-              Resultado:
-              ${p.gols_casa} × ${p.gols_fora}
-            </div>
-
-            <div class="pontos">
-              +${p.pontos} pts
-            </div>
-          `
-          : ""
+          ? `<span class="status encerrado">Encerrado</span>`
+          : `<span class="status aberto">Aberto</span>`
       }
-
     </div>
-  `;
+
+    <div class="jogo-nome">
+      ${p.time_casa} × ${p.time_fora}
+    </div>
+
+    <div class="linha-info">
+      🎯 Seu palpite:
+      <strong>
+        ${p.palpite_casa} × ${p.palpite_fora}
+      </strong>
+    </div>
+
+    ${
+      p.encerrado
+        ? `
+          <div class="linha-info">
+            ⚽ Resultado:
+            <strong>
+              ${p.gols_casa} × ${p.gols_fora}
+            </strong>
+          </div>
+
+          <div class="pontos-pill">
+            +${p.pontos} pts
+          </div>
+        `
+        : ""
+    }
+
+  </div>
+`;
 
 }).join("");
 
