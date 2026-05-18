@@ -275,7 +275,12 @@ def registrar(dados: RegistroInput):
             "SELECT * FROM usuarios WHERE email = ?", (dados.email,)
         ).fetchone()
         token = criar_token(usuario["id"], usuario["email"])
-        return {"token": token, "nome": usuario["nome"], "id": usuario["id"]}
+        return {
+    "token": token,
+    "nome": usuario["nome"],
+    "id": usuario["id"],
+    "is_admin": bool(usuario["is_admin"])
+}
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail="Este e-mail já está cadastrado.")
     finally:
@@ -300,7 +305,12 @@ def login(dados: LoginInput):
         raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
 
     token = criar_token(usuario["id"], usuario["email"])
-    return {"token": token, "nome": usuario["nome"], "id": usuario["id"]}
+    return {
+    "token": token,
+    "nome": usuario["nome"],
+    "id": usuario["id"],
+    "is_admin": bool(usuario["is_admin"])
+}
 
 
 @app.get("/jogos")
@@ -378,7 +388,7 @@ def enviar_palpite(dados: PalpiteInput, usuario=Depends(verificar_token)):
         raise HTTPException(
             status_code=400,
             detail="Palpites encerrados 5 minutos antes do jogo!"
-    )
+        )
 
     # Salvar palpite
     conn.execute("""
