@@ -88,7 +88,7 @@ def criar_tabelas():
             time_casa    TEXT NOT NULL,
             time_fora    TEXT NOT NULL,
             data_jogo    TEXT NOT NULL,        -- formato: "2026-06-15 18:00"
-            fase         TEXT DEFAULT 'Grupos', -- Grupos, Oitavas, Quartas, Semi, Final
+            fase         TEXT DEFAULT 'Grupos', -- Grupo A, Oitavas, Quartas, Semi, Final
             gols_casa    INTEGER DEFAULT NULL,  -- NULL = ainda não aconteceu
             gols_fora    INTEGER DEFAULT NULL,
             encerrado    INTEGER DEFAULT 0      -- 0 = aberto para palpites, 1 = encerrado
