@@ -585,22 +585,7 @@ async function abrirPalpitesUsuario(usuarioId) {
 
     const html = data.palpites.map(p => {
 
-      if (p.bloqueado) {
-
-        return `
-          <div class="palpite-card bloqueado">
-
-            <div>
-              ${p.time_casa} × ${p.time_fora}
-            </div>
-
-            <div style="margin-top:8px;color:#999">
-              🔒 Palpite oculto até o encerramento
-            </div>
-
-          </div>
-    `;
-  }
+      
 
  return `
   <div class="palpite-card">

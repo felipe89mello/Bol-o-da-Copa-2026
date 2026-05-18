@@ -590,32 +590,22 @@ def ver_palpites_usuario(
             < horario_limite
         )
 
-        # se ainda estiver aberto, não mostra o palpite
+        # só mostra jogos já encerrados/liberados
         if palpites_abertos:
+            continue
 
-            resultado.append({
-                "time_casa": p["time_casa"],
-                "time_fora": p["time_fora"],
-                "fase": p["fase"],
-                "data_jogo": p["data_jogo"],
-                "bloqueado": True
-            })
-
-        else:
-
-            resultado.append({
-                "time_casa": p["time_casa"],
-                "time_fora": p["time_fora"],
-                "gols_casa": p["gols_casa"],
-                "gols_fora": p["gols_fora"],
-                "palpite_casa": p["palpite_casa"],
-                "palpite_fora": p["palpite_fora"],
-                "pontos": p["pontos"],
-                "fase": p["fase"],
-                "encerrado": bool(p["encerrado"]),
-                "data_jogo": p["data_jogo"],
-                "bloqueado": False
-            })
+        resultado.append({
+            "time_casa": p["time_casa"],
+            "time_fora": p["time_fora"],
+            "gols_casa": p["gols_casa"],
+            "gols_fora": p["gols_fora"],
+            "palpite_casa": p["palpite_casa"],
+            "palpite_fora": p["palpite_fora"],
+            "pontos": p["pontos"],
+            "fase": p["fase"],
+            "encerrado": bool(p["encerrado"]),
+            "data_jogo": p["data_jogo"]
+        })
     conn.close()
 
     return {
