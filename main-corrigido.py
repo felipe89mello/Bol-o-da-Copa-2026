@@ -523,14 +523,16 @@ def ranking(usuario=Depends(verificar_token)):
     """).fetchall()
 
     resultado = []
+
     for i, row in enumerate(ranking, start=1):
         resultado.append({
+            "id": row["id"],  # ← IMPORTANTE
             "posicao": i,
             "nome": row["nome"],
             "total_pontos": row["total_pontos"],
             "total_palpites": row["total_palpites"],
             "placares_exatos": row["placares_exatos"],
-            "sou_eu": row["id"] == usuario["sub"]
+            "sou_eu": row["id"] == int(usuario["sub"])
         })
 
     conn.close()
