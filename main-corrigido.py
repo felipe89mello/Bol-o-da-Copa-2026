@@ -574,19 +574,48 @@ def ver_palpites_usuario(
     resultado = []
 
     for p in palpites:
-        resultado.append({
-            "time_casa": p["time_casa"],
-            "time_fora": p["time_fora"],
-            "gols_casa": p["gols_casa"],
-            "gols_fora": p["gols_fora"],
-            "palpite_casa": p["palpite_casa"],
-            "palpite_fora": p["palpite_fora"],
-            "pontos": p["pontos"],
-            "fase": p["fase"],
-            "encerrado": bool(p["encerrado"]),
-            "data_jogo": p["data_jogo"]
-        })
 
+        # horário do jogo
+        data_jogo = datetime.strptime(
+            p["data_jogo"],
+            "%Y-%m-%d %H:%M"
+        ).replace(tzinfo=ZoneInfo("America/Sao_Paulo"))
+
+        # limite = 5 minutos antes
+        horario_limite = data_jogo - timedelta(minutes=5)
+
+        # ainda pode palpitar?
+        palpites_abertos = (
+            datetime.now(ZoneInfo("America/Sao_Paulo"))
+            < horario_limite
+        )
+
+        # se ainda estiver aberto, não mostra o palpite
+        if palpites_abertos:
+
+            resultado.append({
+                "time_casa": p["time_casa"],
+                "time_fora": p["time_fora"],
+                "fase": p["fase"],
+                "data_jogo": p["data_jogo"],
+                "bloqueado": True
+            })
+
+        else:
+
+            resultado.append({
+                "time_casa": p["time_casa"],
+                "time_fora": p["time_fora"],
+                "gols_casa": p["gols_casa"],
+                "gols_fora": p["gols_fora"],
+                "palpite_casa": p["palpite_casa"],
+                "palpite_fora": p["palpite_fora"],
+                "pontos": p["pontos"],
+                "fase": p["fase"],
+                "encerrado": bool(p["encerrado"]),
+                "data_jogo": p["data_jogo"],
+                "bloqueado": False
+            })
     conn.close()
 
     return {

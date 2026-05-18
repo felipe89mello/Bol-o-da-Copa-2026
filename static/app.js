@@ -583,43 +583,58 @@ async function abrirPalpitesUsuario(usuarioId) {
       throw new Error(data.detail);
     }
 
-    const htmlPalpites = data.palpites.map(p => `
-      <div class="palpite-usuario-card">
+    const html = dados.palpites.map(p => {
+
+  if (p.bloqueado) {
+
+    return `
+      <div class="palpite-card bloqueado">
 
         <div>
-          <strong>
-            ${bandeira(p.time_casa)} ${p.time_casa}
-            ×
-            ${bandeira(p.time_fora)} ${p.time_fora}
-          </strong>
+          ${p.time_casa} × ${p.time_fora}
         </div>
 
-        <div>
-          Palpite:
-          ${p.palpite_casa} × ${p.palpite_fora}
+        <div style="margin-top:8px;color:#999">
+          🔒 Palpite oculto até o encerramento
         </div>
-
-        ${
-          p.encerrado
-            ? `
-              <div>
-                Resultado:
-                ${p.gols_casa} × ${p.gols_fora}
-              </div>
-
-              <div class="pontos-badge">
-                +${p.pontos} pts
-              </div>
-            `
-            : `
-              <div style="color:var(--text2)">
-                Jogo ainda não encerrado
-              </div>
-            `
-        }
 
       </div>
-    `).join("");
+    `;
+  }
+
+  return `
+    <div class="palpite-card">
+
+      <div>
+        ${p.time_casa} × ${p.time_fora}
+      </div>
+
+      <div style="margin-top:8px">
+        Palpite:
+        <strong>
+          ${p.palpite_casa} × ${p.palpite_fora}
+        </strong>
+      </div>
+
+      ${
+        p.encerrado
+          ? `
+            <div>
+              Resultado:
+              ${p.gols_casa} × ${p.gols_fora}
+            </div>
+
+            <div class="pontos">
+              +${p.pontos} pts
+            </div>
+          `
+          : ""
+      }
+
+    </div>
+  `;
+
+}).join("");
 
     document.getElementById("modal-conteudo").innerHTML = `
       <h2 style="margin-bottom:20px">
