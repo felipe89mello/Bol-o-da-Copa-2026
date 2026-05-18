@@ -129,6 +129,40 @@
   <div id="aba-admin" style="display:none">
     <p class="secao-titulo">⚙️ Painel do Administrador</p>
     <div class="admin-card">
+      <div class="admin-card">
+  <p class="admin-titulo">➕ Criar Novo Jogo</p>
+
+  <div class="form-grupo">
+    <label>Time da Casa</label>
+    <input type="text" id="novo-time-casa" placeholder="Brasil" />
+  </div>
+
+  <div class="form-grupo">
+    <label>Time Visitante</label>
+    <input type="text" id="novo-time-fora" placeholder="Argentina" />
+  </div>
+
+  <div class="form-grupo">
+    <label>Data e horário</label>
+    <input type="datetime-local" id="novo-data-jogo" />
+  </div>
+
+  <div class="form-grupo">
+    <label>Fase</label>
+
+    <select id="nova-fase">
+      <option value="Grupos">Grupos</option>
+      <option value="Oitavas">Oitavas</option>
+      <option value="Quartas">Quartas</option>
+      <option value="Semifinal">Semifinal</option>
+      <option value="Final">Final</option>
+    </select>
+  </div>
+
+  <button class="btn-primary" onclick="criarJogo()">
+    ➕ Criar jogo
+  </button>
+</div>
       <p class="admin-titulo">Registrar Resultado</p>
       <label>Selecione o jogo</label>
       <select id="admin-jogo"></select>

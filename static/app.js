@@ -443,3 +443,66 @@ function mostrarToast(msg, erro = false) {
   t.className = erro ? "erro visivel" : "visivel";
   setTimeout(() => t.classList.remove("visivel"), 2800);
 }
+
+async function criarJogo() {
+
+  const time_casa =
+    document.getElementById("novo-time-casa").value;
+
+  const time_fora =
+    document.getElementById("novo-time-fora").value;
+
+  const dataInput =
+    document.getElementById("novo-data-jogo").value;
+
+  const fase =
+    document.getElementById("nova-fase").value;
+
+  if (!time_casa || !time_fora || !dataInput) {
+    mostrarToast("Preencha todos os campos", true);
+    return;
+  }
+
+  // converte para formato do backend
+  const data_jogo =
+    dataInput.replace("T", " ");
+
+  try {
+
+    const resposta = await fetch(`${API}/jogo`, {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+
+      body: JSON.stringify({
+        time_casa,
+        time_fora,
+        data_jogo,
+        fase
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(dados.detail);
+    }
+
+    mostrarToast("✅ Jogo criado!");
+
+    carregarJogos();
+
+    // limpa formulário
+    document.getElementById("novo-time-casa").value = "";
+    document.getElementById("novo-time-fora").value = "";
+    document.getElementById("novo-data-jogo").value = "";
+
+  } catch (erro) {
+
+    mostrarToast(erro.message, true);
+
+  }
+}
