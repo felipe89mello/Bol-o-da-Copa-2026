@@ -583,22 +583,22 @@ async function abrirPalpitesUsuario(usuarioId) {
       throw new Error(data.detail);
     }
 
-    const html = dados.palpites.map(p => {
+    const html = data.palpites.map(p => {
 
-  if (p.bloqueado) {
+      if (p.bloqueado) {
 
-    return `
-      <div class="palpite-card bloqueado">
+        return `
+          <div class="palpite-card bloqueado">
 
-        <div>
-          ${p.time_casa} × ${p.time_fora}
-        </div>
+            <div>
+              ${p.time_casa} × ${p.time_fora}
+            </div>
 
-        <div style="margin-top:8px;color:#999">
-          🔒 Palpite oculto até o encerramento
-        </div>
+            <div style="margin-top:8px;color:#999">
+              🔒 Palpite oculto até o encerramento
+            </div>
 
-      </div>
+          </div>
     `;
   }
 
@@ -641,7 +641,7 @@ async function abrirPalpitesUsuario(usuarioId) {
         Palpites de ${data.usuario}
       </h2>
 
-      ${htmlPalpites}
+      ${html}
     `;
 
     document.getElementById("modal").style.display = "flex";
