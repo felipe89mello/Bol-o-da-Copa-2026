@@ -181,15 +181,42 @@ async function carregarJogos() {
 
 // Emojis de bandeira por país (simplificado)
 const bandeiras = {
-  "Brasil": "🇧🇷", "Argentina": "🇦🇷", "França": "🇫🇷", "Alemanha": "🇩🇪",
-  "Espanha": "🇪🇸", "Portugal": "🇵🇹", "Inglaterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Itália": "🇮🇹",
-  "Japão": "🇯🇵", "Coreia do Sul": "🇰🇷", "México": "🇲🇽", "EUA": "🇺🇸",
-  "Canadá": "🇨🇦", "Uruguai": "🇺🇾", "Colômbia": "🇨🇴", "Holanda": "🇳🇱",
-  "Bélgica": "🇧🇪", "Croácia": "🇭🇷", "Senegal": "🇸🇳", "Marrocos": "🇲🇦",
+  "Brasil": "https://flagcdn.com/w80/br.png",
+  "Argentina": "https://flagcdn.com/w80/ar.png",
+  "França": "https://flagcdn.com/w80/fr.png",
+  "Alemanha": "https://flagcdn.com/w80/de.png",
+  "Espanha": "https://flagcdn.com/w80/es.png",
+  "Portugal": "https://flagcdn.com/w80/pt.png",
+  "Inglaterra": "https://flagcdn.com/w80/gb-eng.png",
+  "Itália": "https://flagcdn.com/w80/it.png",
+  "Japão": "https://flagcdn.com/w80/jp.png",
+  "Coreia do Sul": "https://flagcdn.com/w80/kr.png",
+  "México": "https://flagcdn.com/w80/mx.png",
+  "EUA": "https://flagcdn.com/w80/us.png",
+  "Canadá": "https://flagcdn.com/w80/ca.png",
+  "Uruguai": "https://flagcdn.com/w80/uy.png",
+  "Colômbia": "https://flagcdn.com/w80/co.png",
+  "Holanda": "https://flagcdn.com/w80/nl.png",
+  "Bélgica": "https://flagcdn.com/w80/be.png",
+  "Croácia": "https://flagcdn.com/w80/hr.png",
+  "Senegal": "https://flagcdn.com/w80/sn.png",
+  "Marrocos": "https://flagcdn.com/w80/ma.png",
 };
 
 function bandeira(pais) {
-  return bandeiras[pais] || "🏳️";
+  const url = bandeiras[pais];
+
+  if (!url) {
+    return `<span class="sem-bandeira">🏳️</span>`;
+  }
+
+  return `
+    <img
+      src="${url}"
+      alt="${pais}"
+      class="bandeira-img"
+    />
+  `;
 }
 
 function renderizarJogos(jogos) {
@@ -356,14 +383,14 @@ const horarioLimite = new Date(
 
     <div class="jogo-times">
       <div class="time">
-        <span class="time-emoji">${bandeira(jogo.time_casa)}</span>
+        <div class="time-emoji">${bandeira(jogo.time_casa)}</div>
         <div class="time-nome">${jogo.time_casa}</div>
       </div>
 
       ${placarCentro}
 
       <div class="time">
-        <span class="time-emoji">${bandeira(jogo.time_fora)}</span>
+         <div class="time-emoji">${bandeira(jogo.time_fora)}</div>
         <div class="time-nome">${jogo.time_fora}</div>
       </div>
     </div>

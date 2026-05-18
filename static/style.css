@@ -609,3 +609,16 @@
   border-radius: 999px;
   font-weight: bold;
 }
+
+.bandeira-img{
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.15);
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+
+.sem-bandeira{
+  font-size:32px;
+}
