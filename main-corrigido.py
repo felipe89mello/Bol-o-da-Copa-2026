@@ -110,21 +110,6 @@ def criar_tabelas():
     """)
     conn.commit()
 
-    # Inserir jogos de exemplo se o banco estiver vazio
-    count = conn.execute("SELECT COUNT(*) FROM jogos").fetchone()[0]
-    if count == 0:
-        jogos_exemplo = [
-            ("Brasil", "Argentina", "2026-06-15 21:00", "Grupos"),
-            ("França", "Alemanha", "2026-06-16 18:00", "Grupos"),
-            ("Espanha", "Portugal", "2026-06-17 15:00", "Grupos"),
-            ("Inglaterra", "Itália", "2026-06-18 21:00", "Grupos"),
-            ("Japão", "Coreia do Sul", "2026-06-19 12:00", "Grupos"),
-        ]
-        conn.executemany(
-            "INSERT INTO jogos (time_casa, time_fora, data_jogo, fase) VALUES (?, ?, ?, ?)",
-            jogos_exemplo
-        )
-        conn.commit()
 
     conn.close()
 
