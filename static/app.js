@@ -239,7 +239,7 @@ const bandeiras = {
 
   // ÁSIA
   "Japão": "https://flagcdn.com/w80/jp.png",
-  "Coréia do Sul": "https://flagcdn.com/w80/kr.png",
+  "Coreia do Sul": "https://flagcdn.com/w80/kr.png",
   "Arábia Saudita": "https://flagcdn.com/w80/sa.png",
   "Irã": "https://flagcdn.com/w80/ir.png",
   "Qatar": "https://flagcdn.com/w80/qa.png",
