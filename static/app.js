@@ -426,7 +426,9 @@ async function carregarRanking() {
     const ranking = await res.json();
 
     container.innerHTML = ranking.map(p => `
-      <div class="ranking-card ${p.sou_eu ? 'sou-eu' : ''}">
+      <div class="ranking-card ${p.sou_eu ? 'sou-eu' : ''}"
+  onclick="abrirPalpitesUsuario(${p.id})"
+>
         <div class="posicao ${p.posicao <= 3 ? 'top' + p.posicao : ''}">
           ${p.posicao === 1 ? '🥇' : p.posicao === 2 ? '🥈' : p.posicao === 3 ? '🥉' : p.posicao + 'º'}
         </div>
@@ -558,6 +560,80 @@ async function criarJogo() {
   } catch (erro) {
 
     mostrarToast(erro.message, true);
+
+  }
+}
+
+async function abrirPalpitesUsuario(usuarioId) {
+
+  try {
+
+    const res = await fetch(
+      `${API}/usuario/${usuarioId}/palpites`,
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.detail);
+    }
+
+    const htmlPalpites = data.palpites.map(p => `
+      <div class="palpite-usuario-card">
+
+        <div>
+          <strong>
+            ${bandeira(p.time_casa)} ${p.time_casa}
+            ×
+            ${bandeira(p.time_fora)} ${p.time_fora}
+          </strong>
+        </div>
+
+        <div>
+          Palpite:
+          ${p.palpite_casa} × ${p.palpite_fora}
+        </div>
+
+        ${
+          p.encerrado
+            ? `
+              <div>
+                Resultado:
+                ${p.gols_casa} × ${p.gols_fora}
+              </div>
+
+              <div class="pontos-badge">
+                +${p.pontos} pts
+              </div>
+            `
+            : `
+              <div style="color:var(--text2)">
+                Jogo ainda não encerrado
+              </div>
+            `
+        }
+
+      </div>
+    `).join("");
+
+    document.getElementById("modal-conteudo").innerHTML = `
+      <h2 style="margin-bottom:20px">
+        Palpites de ${data.usuario}
+      </h2>
+
+      ${htmlPalpites}
+    `;
+
+    document.getElementById("modal").style.display = "flex";
+
+  } catch (e) {
+
+    mostrarToast(e.message, true);
 
   }
 }

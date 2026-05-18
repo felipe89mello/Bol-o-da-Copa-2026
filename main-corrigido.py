@@ -546,3 +546,63 @@ if __name__ == "__main__":
         port=int(os.getenv("PORT", 8000)),
         reload=True
     )
+
+@app.get("/usuario/{usuario_id}/palpites")
+def ver_palpites_usuario(
+    usuario_id: int,
+    usuario=Depends(verificar_token)
+):
+    conn = get_db()
+
+    user = conn.execute("""
+        SELECT id, nome
+        FROM usuarios
+        WHERE id = ?
+    """, (usuario_id,)).fetchone()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuário não encontrado."
+        )
+
+    palpites = conn.execute("""
+        SELECT
+            j.time_casa,
+            j.time_fora,
+            j.gols_casa,
+            j.gols_fora,
+            j.encerrado,
+            p.palpite_casa,
+            p.palpite_fora,
+            p.pontos,
+            j.fase,
+            j.data_jogo
+        FROM palpites p
+        JOIN jogos j ON j.id = p.jogo_id
+        WHERE p.usuario_id = ?
+        ORDER BY j.data_jogo
+    """, (usuario_id,)).fetchall()
+
+    resultado = []
+
+    for p in palpites:
+        resultado.append({
+            "time_casa": p["time_casa"],
+            "time_fora": p["time_fora"],
+            "gols_casa": p["gols_casa"],
+            "gols_fora": p["gols_fora"],
+            "palpite_casa": p["palpite_casa"],
+            "palpite_fora": p["palpite_fora"],
+            "pontos": p["pontos"],
+            "fase": p["fase"],
+            "encerrado": bool(p["encerrado"]),
+            "data_jogo": p["data_jogo"]
+        })
+
+    conn.close()
+
+    return {
+        "usuario": user["nome"],
+        "palpites": resultado
+    }
