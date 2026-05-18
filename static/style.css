@@ -493,3 +493,25 @@
       margin-bottom: 12px;
       outline: none;
     }
+
+    .subtabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.subtab{
+  flex:1;
+  border:none;
+  background:#132238;
+  color:#fff;
+  padding:12px;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.subtab.ativa{
+  background:linear-gradient(135deg,#00c853,#009624);
+}

@@ -145,6 +145,21 @@ function mostrarAba(aba, btn) {
   if (aba === "admin") carregarJogosAdmin();
 }
 
+let subAbaAtual = "futuros";
+
+function trocarSubAba(tipo, btn) {
+
+  subAbaAtual = tipo;
+
+  document
+    .querySelectorAll(".subtab")
+    .forEach(b => b.classList.remove("ativa"));
+
+  btn.classList.add("ativa");
+
+  carregarJogos();
+}
+
 /* ══════════════════════════════════════════
    CARREGAR E RENDERIZAR JOGOS
 ══════════════════════════════════════════ */
@@ -178,23 +193,55 @@ function bandeira(pais) {
 }
 
 function renderizarJogos(jogos) {
+
   const container = document.getElementById("lista-jogos");
+
   if (!jogos.length) {
-    container.innerHTML = '<p style="color:var(--text2);text-align:center;padding:40px">Nenhum jogo cadastrado ainda.</p>';
+    container.innerHTML = `
+      <p style="color:var(--text2);text-align:center;padding:40px">
+        Nenhum jogo cadastrado.
+      </p>
+    `;
     return;
   }
 
-  // Agrupa por fase
+  let jogosFiltrados = [];
+
+  if (subAbaAtual === "futuros") {
+    jogosFiltrados = jogos.filter(j => !j.encerrado);
+  } else {
+    jogosFiltrados = jogos.filter(j => j.encerrado);
+  }
+
+  if (!jogosFiltrados.length) {
+    container.innerHTML = `
+      <p style="color:var(--text2);text-align:center;padding:40px">
+        Nenhum jogo nesta categoria.
+      </p>
+    `;
+    return;
+  }
+
+  // AGRUPAR POR FASE
   const fases = {};
-  jogos.forEach(j => {
-    if (!fases[j.fase]) fases[j.fase] = [];
+
+  jogosFiltrados.forEach(j => {
+    if (!fases[j.fase]) {
+      fases[j.fase] = [];
+    }
+
     fases[j.fase].push(j);
   });
 
-  container.innerHTML = Object.entries(fases).map(([fase, lista]) => `
-    <p class="secao-titulo" style="margin-top:16px">${fase}</p>
-    ${lista.map(jogo => renderizarJogo(jogo)).join("")}
-  `).join("");
+  container.innerHTML = Object.entries(fases)
+    .map(([fase, lista]) => `
+      <p class="secao-titulo" style="margin-top:16px">
+        ${fase}
+      </p>
+
+      ${lista.map(jogo => renderizarJogo(jogo)).join("")}
+    `)
+    .join("");
 }
 
 function renderizarJogo(jogo) {

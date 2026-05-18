@@ -111,8 +111,25 @@
 
   <!-- ABA: JOGOS -->
   <div id="aba-jogos">
-    <p class="secao-titulo">Jogos disponíveis</p>
-    <div id="lista-jogos">
+    <div class="subtabs">
+
+  <button
+    class="subtab ativa"
+    onclick="trocarSubAba('futuros', this)"
+  >
+    ⏳ Jogos futuros
+  </button>
+
+  <button
+    class="subtab"
+    onclick="trocarSubAba('encerrados', this)"
+  >
+    🔒 Jogos encerrados
+  </button>
+
+</div>
+
+<div id="lista-jogos">
       <div class="loading"><div class="spinner"></div>Carregando jogos...</div>
     </div>
   </div>
