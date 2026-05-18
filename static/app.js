@@ -94,7 +94,11 @@ async function fazerCadastro() {
 
 function salvarSessao(data) {
   token = data.token;
-  usuario = { nome: data.nome, id: data.id };
+  usuario = {
+  nome: data.nome,
+  id: data.id,
+  is_admin: data.is_admin
+};
   localStorage.setItem("bolao_token", token);
   localStorage.setItem("bolao_usuario", JSON.stringify(usuario));
 }
@@ -118,7 +122,11 @@ function mostrarApp() {
   document.getElementById("conteudo").classList.remove("oculto");
   document.getElementById("nav").classList.add("visivel");
   document.getElementById("btn-logout").style.display = "block";
+  if (usuario.is_admin) {
   document.getElementById("btn-nav-admin").style.display = "block";
+} else {
+  document.getElementById("btn-nav-admin").style.display = "none";
+}
   document.getElementById("nome-usuario").textContent = `Olá, ${usuario.nome}! 👋`;
   carregarJogos();
 }
