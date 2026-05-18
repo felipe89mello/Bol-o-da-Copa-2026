@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  />
+
+  <meta name="theme-color" content="#0a1628" />
+
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  />
+
+  <title>Bolão da Copa 2026</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header>
+  <div class="logo">⚽ BOLÃO <span>COPA 2026</span></div>
+  <button id="btn-logout" onclick="logout()">Sair</button>
+</header>
+
+<!-- ══════════════════════════════════════
+     ABAS DE NAVEGAÇÃO
+══════════════════════════════════════ -->
+<nav id="nav">
+  <button class="ativa" onclick="mostrarAba('jogos', this)">🎯 Palpites</button>
+  <button onclick="mostrarAba('ranking', this)">🏆 Ranking</button>
+  <button id="btn-nav-admin" onclick="mostrarAba('admin', this)" style="display:none">⚙️ Admin</button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     TELA DE LOGIN / CADASTRO
+══════════════════════════════════════ -->
+<div id="tela-auth">
+  <p class="auth-titulo">BOLÃO DA COPA</p>
+  <p class="auth-sub">Faça seus palpites e dispute com os amigos!</p>
+
+  <div class="tabs-auth">
+    <button class="ativa" onclick="alternarAuth('login', this)">Entrar</button>
+    <button onclick="alternarAuth('cadastro', this)">Cadastrar</button>
+  </div>
+
+  <!-- FORMULÁRIO DE LOGIN -->
+  <div id="form-login">
+    <div class="form-grupo">
+      <label>E-mail</label>
+      <input type="email" id="login-email" placeholder="seu@email.com" />
+    </div>
+    <div class="form-grupo">
+      <label>Senha</label>
+      <input type="password" id="login-senha" placeholder="••••••••" />
+    </div>
+    <button class="btn-primary" onclick="fazerLogin()">Entrar</button>
+    <p id="erro-login" class="erro"></p>
+  </div>
+
+  <!-- FORMULÁRIO DE CADASTRO -->
+  <div id="form-cadastro" style="display:none">
+    <div class="form-grupo">
+      <label>Seu nome</label>
+      <input type="text" id="cad-nome" placeholder="Como quer aparecer no ranking?" />
+    </div>
+    <div class="form-grupo">
+      <label>E-mail</label>
+      <input type="email" id="cad-email" placeholder="seu@email.com" />
+    </div>
+    <div class="form-grupo">
+      <label>Senha</label>
+      <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres" />
+    </div>
+    <button class="btn-primary" onclick="fazerCadastro()">Criar conta</button>
+    <p id="erro-cadastro" class="erro"></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CONTEÚDO PRINCIPAL (após login)
+══════════════════════════════════════ -->
+<div id="conteudo" class="oculto">
+
+  <!-- Boas-vindas -->
+  <div class="bem-vindo">
+    <span class="emoji">⚽</span>
+    <div>
+      <h2 id="nome-usuario">Olá!</h2>
+      <p>Faça seus palpites antes do apito inicial!</p>
+    </div>
+  </div>
+
+  <!-- Aviso Palpite -->
+  <div class="aviso-palpite">
+  ⏳ Os palpites encerram automaticamente 5 minutos antes do início das partidas.
+  </div>
+
+  <!-- ABA: JOGOS -->
+  <div id="aba-jogos">
+    <p class="secao-titulo">Jogos disponíveis</p>
+    <div id="lista-jogos">
+      <div class="loading"><div class="spinner"></div>Carregando jogos...</div>
+    </div>
+  </div>
+
+  <!-- ABA: RANKING -->
+  <div id="aba-ranking" style="display:none">
+    <p class="secao-titulo">🏆 Classificação geral</p>
+    <div id="lista-ranking">
+      <div class="loading"><div class="spinner"></div>Carregando ranking...</div>
+    </div>
+  </div>
+
+  <!-- ABA: ADMIN -->
+  <div id="aba-admin" style="display:none">
+    <p class="secao-titulo">⚙️ Painel do Administrador</p>
+    <div class="admin-card">
+      <p class="admin-titulo">Registrar Resultado</p>
+      <label>Selecione o jogo</label>
+      <select id="admin-jogo"></select>
+      <div style="display:flex;gap:10px;margin-bottom:12px">
+        <div style="flex:1">
+          <label id="label-casa">Gols Casa</label>
+          <input type="number" id="admin-gols-casa" min="0" value="0" />
+        </div>
+        <div style="flex:1">
+          <label id="label-fora">Gols Fora</label>
+          <input type="number" id="admin-gols-fora" min="0" value="0" />
+        </div>
+      </div>
+      <button class="btn-primary" onclick="registrarResultado()">Confirmar Resultado</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast de notificação -->
+<div id="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

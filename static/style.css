@@ -1,0 +1,495 @@
+   /* ══════════════════════════════════════════
+       VARIÁVEIS DE COR E TEMA
+       Mude aqui para personalizar as cores do app
+    ══════════════════════════════════════════ */
+    :root {
+      --bg:         #0a1628;
+      --bg2:        #0f1f3d;
+      --bg3:        #162848;
+      --card:       #1a2f52;
+      --border:     #1e3a6e;
+      --gold:       #f5c518;
+      --gold2:      #e6b800;
+      --green:      #22c55e;
+      --red:        #ef4444;
+      --blue:       #3b82f6;
+      --text:       #e8eef8;
+      --text2:      #8ca0c0;
+      --radius:     14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* COUNTDOWN DOS JOGOS */
+  .countdown {
+    margin-top: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #ffd166;
+    text-align: center;
+    }
+
+    button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    }
+
+    /* ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ */
+    header {
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      border-bottom: 2px solid var(--gold);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+
+    .logo span { color: var(--text); }
+
+    #btn-logout {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* ══════════════════════════════════════════
+       NAVEGAÇÃO POR ABAS
+    ══════════════════════════════════════════ */
+   nav {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: none;
+   }
+   nav.visivel { display: flex; }
+
+    nav button {
+      flex: 1;
+      padding: 13px 8px;
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    nav button.ativa {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ══════════════════════════════════════════
+       TELA DE LOGIN / CADASTRO
+    ══════════════════════════════════════════ */
+    #tela-auth {
+      padding: 40px 24px;
+    }
+
+    .auth-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .auth-sub {
+      color: var(--text2);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .tabs-auth {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tabs-auth button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: none;
+      color: var(--text2);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tabs-auth button.ativa {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #000;
+    }
+
+    .form-grupo {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus { border-color: var(--gold); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .erro { color: var(--red); font-size: 13px; margin-top: 10px; text-align: center; }
+
+    /* ══════════════════════════════════════════
+       CONTEÚDO PRINCIPAL
+    ══════════════════════════════════════════ */
+    #conteudo { padding: 20px 16px; }
+    #conteudo.oculto { display: none; }
+
+    .bem-vindo {
+      background: linear-gradient(135deg, var(--card), var(--bg3));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bem-vindo .emoji { font-size: 28px; }
+
+    .bem-vindo h2 { font-size: 16px; font-weight: 700; }
+    .bem-vindo p { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+    .aviso-palpite {
+      background: rgba(245, 197, 24, 0.12);
+      border: 1px solid rgba(245, 197, 24, 0.35);
+      color: #ffd166;
+      padding: 12px;
+      border-radius: 12px;
+      margin: 0 15px 18px;
+      font-size: 0.92rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* ══════════════════════════════════════════
+       CARDS DE JOGOS
+    ══════════════════════════════════════════ */
+    .secao-titulo {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text2);
+      margin-bottom: 12px;
+    }
+
+    .jogo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .jogo-card.com-palpite { border-color: var(--green); }
+    .jogo-card.encerrado { opacity: 0.75; }
+
+    .jogo-fase {
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .jogo-times {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .time {
+      text-align: center;
+      flex: 1;
+    }
+
+    .time-emoji { font-size: 28px; display: block; }
+    .time-nome { font-size: 13px; font-weight: 700; margin-top: 4px; }
+
+    .placar-real {
+      text-align: center;
+      min-width: 60px;
+    }
+
+    .placar-real .nums {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+
+    .placar-real .vs {
+      font-size: 18px;
+      color: var(--text2);
+      font-family: 'Bebas Neue', sans-serif;
+    }
+
+    /* Inputs de palpite */
+    .palpite-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .palpite-label {
+      font-size: 11px;
+      color: var(--text2);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .palpite-inputs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .input-placar {
+      width: 56px;
+      text-align: center;
+      font-size: 22px;
+      font-family: 'Bebas Neue', sans-serif;
+      padding: 8px 4px;
+      border-radius: 10px;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    .input-placar:focus { border-color: var(--gold); }
+
+    .x-palpite {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      color: var(--text2);
+    }
+
+    .btn-palpitar {
+      width: 100%;
+      padding: 11px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-palpitar:hover { background: #2563eb; }
+    .btn-palpitar.salvo { background: var(--green); }
+    .btn-palpitar:disabled { opacity: 0.5; cursor: default; }
+
+    .pontos-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    .jogo-data {
+      font-size: 11px;
+      color: var(--text2);
+      margin-bottom: 12px;
+    }
+
+    /* ══════════════════════════════════════════
+       RANKING
+    ══════════════════════════════════════════ */
+    .ranking-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .ranking-card.sou-eu {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, var(--card), #1e3a20);
+    }
+
+    .posicao {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      color: var(--text2);
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .posicao.top1 { color: #ffd700; }
+    .posicao.top2 { color: #c0c0c0; }
+    .posicao.top3 { color: #cd7f32; }
+
+    .ranking-info { flex: 1; }
+    .ranking-nome { font-weight: 700; font-size: 15px; }
+    .ranking-stats { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+    .ranking-pontos {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--gold);
+    }
+
+    /* ══════════════════════════════════════════
+       LOADING
+    ══════════════════════════════════════════ */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text2);
+      font-size: 14px;
+    }
+
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ══════════════════════════════════════════
+       TOAST (NOTIFICAÇÕES)
+    ══════════════════════════════════════════ */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--green);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.3s;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    #toast.erro { background: var(--red); }
+    #toast.visivel { transform: translateX(-50%) translateY(0); }
+
+    /* ══════════════════════════════════════════
+       ADMIN PANEL
+    ══════════════════════════════════════════ */
+    .admin-card {
+      background: var(--card);
+      border: 1px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .admin-titulo {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    select {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+    }

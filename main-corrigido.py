@@ -28,6 +28,8 @@ import hashlib
 from jose import jwt
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import os
 
 # ─────────────────────────────────────────
@@ -35,6 +37,7 @@ import os
 # ─────────────────────────────────────────
 
 app = FastAPI(title="Bolão da Copa API", version="1.0.0")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Permite que o frontend (celular) se comunique com o backend
 # Em produção, troque "*" pelo seu domínio real
@@ -250,9 +253,8 @@ def health():
 
 
 @app.get("/")
-def raiz():
-    """Rota de teste — confirma que o servidor está no ar."""
-    return {"status": "✅ Bolão da Copa rodando!", "versao": "1.0.0"}
+def home():
+    return FileResponse("templates/index-ajustado.html")
 
 
 @app.post("/register")
