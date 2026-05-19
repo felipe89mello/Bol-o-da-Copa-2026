@@ -719,26 +719,6 @@ async function confirmarResultado(jogoId) {
   }
 }
 
-async function registrarResultado() {
-  const jogoId = document.getElementById("admin-jogo").value;
-  const casa = parseInt(document.getElementById("admin-gols-casa").value);
-  const fora = parseInt(document.getElementById("admin-gols-fora").value);
-
-  try {
-    const res = await fetch(`${API}/resultado`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-      body: JSON.stringify({ jogo_id: parseInt(jogoId), gols_casa: casa, gols_fora: fora })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail);
-    mostrarToast("Resultado registrado! ✅");
-    carregarJogosAdmin();
-    carregarJogos();
-  } catch (e) {
-    mostrarToast(e.message, true);
-  }
-}
 
 /* ══════════════════════════════════════════
    TOAST (NOTIFICAÇÃO FLUTUANTE)
