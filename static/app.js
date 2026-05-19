@@ -285,6 +285,8 @@ function renderizarJogos(jogos) {
     return;
   }
 
+  renderizarJogosAdmin(jogos);
+
   let jogosFiltrados = [];
 
   if (subAbaAtual === "futuros") {
@@ -880,4 +882,55 @@ async function salvarEdicaoJogo(jogoId) {
   } catch (e) {
     mostrarToast(e.message, true);
   }
+}
+
+function renderizarJogosAdmin(jogos) {
+
+  const area = document.getElementById(
+    "admin-jogos-lista"
+  );
+
+  if (!area) return;
+
+  area.innerHTML = jogos.map(jogo => `
+
+    <div class="admin-jogo-card">
+
+      <div class="admin-jogo-topo">
+        <strong>
+          ${jogo.time_casa}
+          vs
+          ${jogo.time_fora}
+        </strong>
+      </div>
+
+      <div class="admin-jogo-fase">
+        ${jogo.fase}
+      </div>
+
+      <div class="admin-jogo-data">
+        ${formatarData(jogo.data_jogo)}
+      </div>
+
+      <div class="admin-jogo-botoes">
+
+        <button
+          class="btn-edit"
+          onclick="editarJogo(${jogo.id})"
+        >
+          ✏️ Editar
+        </button>
+
+        <button
+          class="btn-danger"
+          onclick="deletarJogo(${jogo.id})"
+        >
+          🗑️ Excluir
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("");
 }
