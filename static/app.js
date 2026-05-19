@@ -1029,9 +1029,7 @@ async function salvarEdicaoJogo(jogoId) {
 function renderizarJogosAdmin(jogos) {
 
   const area =
-    document.getElementById(
-      "admin-jogos-lista"
-    );
+    document.getElementById("admin-jogos-lista");
 
   if (!area) return;
 
@@ -1042,7 +1040,7 @@ function renderizarJogosAdmin(jogos) {
       <div class="admin-jogo-topo">
         <strong>
           ${jogo.time_casa}
-          vs
+          ×
           ${jogo.time_fora}
         </strong>
       </div>
@@ -1055,7 +1053,34 @@ function renderizarJogosAdmin(jogos) {
         ${jogo.data_jogo}
       </div>
 
+      <div class="admin-placar-inputs">
+
+        <input
+          type="number"
+          min="0"
+          value="${jogo.gols_casa ?? 0}"
+          id="gols-casa-${jogo.id}"
+        />
+
+        <span>×</span>
+
+        <input
+          type="number"
+          min="0"
+          value="${jogo.gols_fora ?? 0}"
+          id="gols-fora-${jogo.id}"
+        />
+
+      </div>
+
       <div class="admin-jogo-botoes">
+
+        <button
+          class="btn-primary"
+          onclick="confirmarResultado(${jogo.id})"
+        >
+          ✅ Confirmar resultado
+        </button>
 
         <button
           class="btn-edit"
