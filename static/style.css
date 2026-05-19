@@ -737,3 +737,62 @@
   cursor:pointer;
   font-weight:700;
 }
+
+.admin-jogo-card{
+
+  background: rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:16px;
+
+  padding:14px;
+
+  margin-top:12px;
+}
+
+.admin-jogo-topo{
+  font-size:15px;
+  font-weight:700;
+  color:white;
+}
+
+.admin-jogo-fase{
+  margin-top:6px;
+  color:#facc15;
+  font-size:13px;
+}
+
+.admin-jogo-data{
+  margin-top:4px;
+  color:#94a3b8;
+  font-size:12px;
+}
+
+.admin-jogo-botoes{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.btn-edit{
+  flex:1;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:10px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.btn-danger{
+  flex:1;
+  background:#dc2626;
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:10px;
+  cursor:pointer;
+  font-weight:700;
+}
