@@ -455,7 +455,7 @@ const horarioLimite = new Date(
    ${inputsOuPlacar}
 
 ${
-  true
+  1 == 1
     ? `
       <button
         class="btn-danger"
