@@ -479,27 +479,6 @@ const horarioLimite = new Date(
 
    ${inputsOuPlacar}
 
-${
-  usuario && usuario.is_admin
-    ? `
-      <div class="admin-acoes-jogo">
-        <button
-          class="btn-admin-editar"
-          onclick="abrirModalEditar(${jogo.id}, '${jogo.time_casa}', '${jogo.time_fora}', '${jogo.data_jogo}', '${jogo.fase}')"
-        >
-          ✏️ Editar
-        </button>
-        <button
-          class="btn-danger"
-          onclick="deletarJogo(${jogo.id})"
-        >
-          🗑️ Excluir
-        </button>
-      </div>
-    `
-    : ""
-}
-
   </div>
 `;
 }
