@@ -455,14 +455,22 @@ const horarioLimite = new Date(
    ${inputsOuPlacar}
 
 ${
-  1 == 1
+  usuario && usuario.is_admin
     ? `
-      <button
-        class="btn-danger"
-        onclick="deletarJogo(${jogo.id})"
-      >
-        🗑️ Excluir jogo
-      </button>
+      <div class="admin-acoes-jogo">
+        <button
+          class="btn-admin-editar"
+          onclick="abrirModalEditar(${jogo.id}, '${jogo.time_casa}', '${jogo.time_fora}', '${jogo.data_jogo}', '${jogo.fase}')"
+        >
+          ✏️ Editar
+        </button>
+        <button
+          class="btn-danger"
+          onclick="deletarJogo(${jogo.id})"
+        >
+          🗑️ Excluir
+        </button>
+      </div>
     `
     : ""
 }
@@ -784,10 +792,92 @@ async function deletarJogo(jogoId) {
     mostrarToast("🗑️ Jogo excluído!");
 
     carregarJogos();
+    carregarJogosAdmin();
 
   } catch (e) {
 
     mostrarToast(e.message, true);
 
+  }
+}
+/* ══════════════════════════════════════════
+   EDITAR JOGO (ADMIN) - Modal
+══════════════════════════════════════════ */
+function abrirModalEditar(id, timeCasa, timeFora, dataJogo, fase) {
+
+  const dataFormatada = dataJogo.replace(" ", "T");
+
+  const fasesOpcoes = [
+    "Grupo A","Grupo B","Grupo C","Grupo D","Grupo E","Grupo F",
+    "Grupo G","Grupo H","Grupo I","Grupo J","Grupo K","Grupo L",
+    "Segunda Fase","Oitavas","Quartas","Semifinal","Final"
+  ].map(f => `<option value="${f}" ${f === fase ? 'selected' : ''}>${f}</option>`).join("");
+
+  document.getElementById("modal-conteudo").innerHTML = `
+    <h2 style="margin-bottom:20px">✏️ Editar Jogo</h2>
+
+    <div class="form-grupo">
+      <label>Time da Casa</label>
+      <input type="text" id="edit-time-casa" value="${timeCasa}" />
+    </div>
+
+    <div class="form-grupo">
+      <label>Time Visitante</label>
+      <input type="text" id="edit-time-fora" value="${timeFora}" />
+    </div>
+
+    <div class="form-grupo">
+      <label>Data e horário</label>
+      <input type="datetime-local" id="edit-data-jogo" value="${dataFormatada}" />
+    </div>
+
+    <div class="form-grupo">
+      <label>Fase</label>
+      <select id="edit-fase">${fasesOpcoes}</select>
+    </div>
+
+    <button class="btn-primary" onclick="salvarEdicaoJogo(${id})" style="margin-top:8px">
+      💾 Salvar alterações
+    </button>
+  `;
+
+  document.getElementById("modal").style.display = "flex";
+}
+
+async function salvarEdicaoJogo(jogoId) {
+
+  const time_casa = document.getElementById("edit-time-casa").value.trim();
+  const time_fora = document.getElementById("edit-time-fora").value.trim();
+  const dataInput = document.getElementById("edit-data-jogo").value;
+  const fase      = document.getElementById("edit-fase").value;
+
+  if (!time_casa || !time_fora || !dataInput) {
+    mostrarToast("Preencha todos os campos", true);
+    return;
+  }
+
+  const data_jogo = dataInput.replace("T", " ");
+
+  try {
+
+    const res = await fetch(`${API}/jogo/${jogoId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ time_casa, time_fora, data_jogo, fase })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail);
+
+    mostrarToast("✅ Jogo atualizado!");
+    document.getElementById("modal").style.display = "none";
+    carregarJogos();
+    carregarJogosAdmin();
+
+  } catch (e) {
+    mostrarToast(e.message, true);
   }
 }

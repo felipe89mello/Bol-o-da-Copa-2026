@@ -646,3 +646,35 @@
   font-weight:700;
   cursor:pointer;
 }
+/* ══════════════════════════════════════════
+   BOTÕES DE AÇÃO ADMIN NOS CARDS DE JOGOS
+══════════════════════════════════════════ */
+.admin-acoes-jogo {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-acoes-jogo .btn-admin-editar {
+  flex: 1;
+  padding: 9px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-acoes-jogo .btn-admin-editar:hover {
+  background: #1d4ed8;
+}
+
+.admin-acoes-jogo .btn-danger {
+  flex: 1;
+  margin-top: 0;
+  padding: 9px;
+  font-size: 13px;
+}
