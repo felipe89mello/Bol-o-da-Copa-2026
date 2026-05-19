@@ -164,18 +164,41 @@ function trocarSubAba(tipo, btn) {
    CARREGAR E RENDERIZAR JOGOS
 ══════════════════════════════════════════ */
 async function carregarJogos() {
-  const container = document.getElementById("lista-jogos");
-  container.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando jogos...</div>';
+
+  const container =
+    document.getElementById("lista-jogos");
+
+  container.innerHTML =
+    '<div class="loading"><div class="spinner"></div>Carregando jogos...</div>';
 
   try {
-    const res = await fetch(`${API}/jogos`, {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
-    if (res.status === 401) { logout(); return; }
+
+    const res = await fetch(
+      `${API}/jogos`,
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+    );
+
+    if (res.status === 401) {
+      logout();
+      return;
+    }
+
     const jogos = await res.json();
+
     renderizarJogos(jogos);
+
+    // 👇 FALTAVA ISSO
+    renderizarJogosAdmin(jogos);
+
   } catch {
-    container.innerHTML = '<p class="erro">Erro ao carregar jogos. Verifique sua conexão.</p>';
+
+    container.innerHTML =
+      '<p class="erro">Erro ao carregar jogos. Verifique sua conexão.</p>';
+
   }
 }
 
