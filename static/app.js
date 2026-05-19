@@ -557,26 +557,166 @@ async function carregarRanking() {
    ADMIN: REGISTRAR RESULTADO
 ══════════════════════════════════════════ */
 async function carregarJogosAdmin() {
+
+  const area = document.getElementById(
+    "admin-jogos-lista"
+  );
+
+  if (!area) return;
+
   try {
-    const res = await fetch(`${API}/jogos`, { headers: { "Authorization": `Bearer ${token}` } });
+
+    const res = await fetch(
+      `${API}/jogos`,
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+    );
+
     const jogos = await res.json();
-    const select = document.getElementById("admin-jogo");
-    select.innerHTML = jogos
-      .filter(j => !j.encerrado)
-      .map(j => `<option value="${j.id}" data-casa="${j.time_casa}" data-fora="${j.time_fora}">
-        ${j.time_casa} × ${j.time_fora} (${j.fase})
-      </option>`).join("");
 
-    // Atualiza labels com os times ao trocar
-    select.onchange = () => {
-      const opt = select.options[select.selectedIndex];
-      document.getElementById("label-casa").textContent = `Gols ${opt.dataset.casa}`;
-      document.getElementById("label-fora").textContent = `Gols ${opt.dataset.fora}`;
-    };
-    select.dispatchEvent(new Event("change"));
+    area.innerHTML = jogos.map(jogo => `
 
-    document.getElementById("btn-nav-admin").style.display = "block";
-  } catch {}
+      <div class="admin-jogo-card">
+
+        <div class="admin-jogo-topo">
+          <strong>
+            ${jogo.time_casa}
+            ×
+            ${jogo.time_fora}
+          </strong>
+        </div>
+
+        <div class="admin-jogo-fase">
+          ${jogo.fase}
+        </div>
+
+        <div class="admin-jogo-data">
+          ${jogo.data_jogo}
+        </div>
+
+        <div class="admin-placar-inputs">
+
+          <input
+            type="number"
+            min="0"
+            value="${jogo.gols_casa ?? 0}"
+            id="gols-casa-${jogo.id}"
+          />
+
+          <span>×</span>
+
+          <input
+            type="number"
+            min="0"
+            value="${jogo.gols_fora ?? 0}"
+            id="gols-fora-${jogo.id}"
+          />
+
+        </div>
+
+        <div class="admin-jogo-botoes">
+
+          <button
+            class="btn-primary"
+            onclick="confirmarResultado(${jogo.id})"
+          >
+            ✅ Confirmar resultado
+          </button>
+
+          <button
+            class="btn-edit"
+            onclick="abrirModalEditar(
+              ${jogo.id},
+              '${jogo.time_casa}',
+              '${jogo.time_fora}',
+              '${jogo.data_jogo}',
+              '${jogo.fase}'
+            )"
+          >
+            ✏️ Editar
+          </button>
+
+          <button
+            class="btn-danger"
+            onclick="deletarJogo(${jogo.id})"
+          >
+            🗑️ Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+  } catch (e) {
+
+    mostrarToast(
+      "Erro ao carregar admin",
+      true
+    );
+
+  }
+}
+
+async function confirmarResultado(jogoId) {
+
+  const casa = parseInt(
+    document.getElementById(
+      `gols-casa-${jogoId}`
+    ).value
+  );
+
+  const fora = parseInt(
+    document.getElementById(
+      `gols-fora-${jogoId}`
+    ).value
+  );
+
+  try {
+
+    const res = await fetch(
+      `${API}/resultado`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+
+        body: JSON.stringify({
+          jogo_id: jogoId,
+          gols_casa: casa,
+          gols_fora: fora
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.detail);
+    }
+
+    mostrarToast(
+      "✅ Resultado confirmado!"
+    );
+
+    carregarJogos();
+    carregarJogosAdmin();
+
+  } catch (e) {
+
+    mostrarToast(
+      e.message,
+      true
+    );
+
+  }
 }
 
 async function registrarResultado() {
