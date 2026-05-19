@@ -622,3 +622,15 @@
 .sem-bandeira{
   font-size:32px;
 }
+
+.btn-danger{
+  width:100%;
+  margin-top:10px;
+  background:#dc2626;
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}

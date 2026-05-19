@@ -448,7 +448,20 @@ const horarioLimite = new Date(
       </div>
     </div>
 
-    ${inputsOuPlacar}
+   ${inputsOuPlacar}
+
+${
+  usuario?.is_admin
+    ? `
+      <button
+        class="btn-danger"
+        onclick="deletarJogo(${jogo.id})"
+      >
+        🗑️ Excluir jogo
+      </button>
+    `
+    : ""
+}
 
   </div>
 `;
@@ -724,6 +737,49 @@ async function abrirPalpitesUsuario(usuarioId) {
     `;
 
     document.getElementById("modal").style.display = "flex";
+
+  } catch (e) {
+
+    mostrarToast(e.message, true);
+
+  }
+}
+
+
+
+/* ══════════════════════════════════════════
+   DELETAR JOGO (ADMIN)
+══════════════════════════════════════════ */
+async function deletarJogo(jogoId) {
+
+  const confirmar = confirm(
+    "Deseja realmente excluir este jogo?"
+  );
+
+  if (!confirmar) return;
+
+  try {
+
+    const res = await fetch(
+      `${API}/jogo/${jogoId}`,
+      {
+        method: "DELETE",
+
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.detail);
+    }
+
+    mostrarToast("🗑️ Jogo excluído!");
+
+    carregarJogos();
 
   } catch (e) {
 

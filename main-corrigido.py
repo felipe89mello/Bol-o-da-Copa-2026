@@ -184,6 +184,12 @@ class JogoInput(BaseModel):
     data_jogo: str
     fase: str
 
+class EditarJogoInput(BaseModel):
+    time_casa: str
+    time_fora: str
+    data_jogo: str
+    fase: str
+
 # ─────────────────────────────────────────
 # SISTEMA DE PONTUAÇÃO
 # Regras clássicas de bolão
@@ -442,6 +448,101 @@ def criar_jogo(
 
     return {
         "mensagem": "✅ Jogo criado com sucesso!"
+    }
+
+@app.put("/jogo/{jogo_id}")
+def editar_jogo(
+    jogo_id: int,
+    dados: EditarJogoInput,
+    usuario=Depends(verificar_token)
+):
+    conn = get_db()
+
+    user = conn.execute(
+        "SELECT * FROM usuarios WHERE id = ?",
+        (usuario["sub"],)
+    ).fetchone()
+
+    if not user["is_admin"]:
+        raise HTTPException(
+            status_code=403,
+            detail="Apenas admins podem editar jogos."
+        )
+
+    jogo = conn.execute(
+        "SELECT * FROM jogos WHERE id = ?",
+        (jogo_id,)
+    ).fetchone()
+
+    if not jogo:
+        raise HTTPException(
+            status_code=404,
+            detail="Jogo não encontrado."
+        )
+
+    conn.execute("""
+        UPDATE jogos
+        SET
+            time_casa = ?,
+            time_fora = ?,
+            data_jogo = ?,
+            fase = ?
+        WHERE id = ?
+    """, (
+        dados.time_casa,
+        dados.time_fora,
+        dados.data_jogo,
+        dados.fase,
+        jogo_id
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "mensagem": "✅ Jogo atualizado!"
+    }
+
+@app.delete("/jogo/{jogo_id}")
+def deletar_jogo(
+    jogo_id: int,
+    usuario=Depends(verificar_token)
+):
+    conn = get_db()
+
+    user = conn.execute(
+        "SELECT * FROM usuarios WHERE id = ?",
+        (usuario["sub"],)
+    ).fetchone()
+
+    if not user["is_admin"]:
+        raise HTTPException(
+            status_code=403,
+            detail="Apenas admins podem deletar jogos."
+        )
+
+    conn.execute(
+        "DELETE FROM palpites WHERE jogo_id = ?",
+        (jogo_id,)
+    )
+
+    cursor = conn.execute(
+        "DELETE FROM jogos WHERE id = ?",
+        (jogo_id,)
+    )
+
+    conn.commit()
+
+    if cursor.rowcount == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Jogo não encontrado."
+        )
+
+    conn.close()
+
+    return {
+        "mensagem": "🗑️ Jogo deletado!"
     }
 
 @app.post("/resultado")
