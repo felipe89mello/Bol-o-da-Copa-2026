@@ -436,14 +436,18 @@ const horarioLimite = new Date(
 
     <div class="jogo-times">
       <div class="time">
-        <div class="time-emoji">${bandeira(jogo.time_casa)}</div>
+        <div class="time-emoji">
+  ${bandeira(jogo.time_casa)}
+</div>
         <div class="time-nome">${jogo.time_casa}</div>
       </div>
 
       ${placarCentro}
 
       <div class="time">
-         <div class="time-emoji">${bandeira(jogo.time_fora)}</div>
+         <div class="time-emoji">
+  ${bandeira(jogo.time_fora)}
+</div>
         <div class="time-nome">${jogo.time_fora}</div>
       </div>
     </div>
