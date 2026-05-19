@@ -909,9 +909,10 @@ async function salvarEdicaoJogo(jogoId) {
 
 function renderizarJogosAdmin(jogos) {
 
-  const area = document.getElementById(
-    "admin-jogos-lista"
-  );
+  const area =
+    document.getElementById(
+      "admin-jogos-lista"
+    );
 
   if (!area) return;
 
@@ -932,14 +933,20 @@ function renderizarJogosAdmin(jogos) {
       </div>
 
       <div class="admin-jogo-data">
-        ${formatarData(jogo.data_jogo)}
+        ${jogo.data_jogo}
       </div>
 
       <div class="admin-jogo-botoes">
 
         <button
           class="btn-edit"
-          onclick="editarJogo(${jogo.id})"
+          onclick="abrirModalEditar(
+            ${jogo.id},
+            '${jogo.time_casa}',
+            '${jogo.time_fora}',
+            '${jogo.data_jogo}',
+            '${jogo.fase}'
+          )"
         >
           ✏️ Editar
         </button>
@@ -956,4 +963,5 @@ function renderizarJogosAdmin(jogos) {
     </div>
 
   `).join("");
+
 }
