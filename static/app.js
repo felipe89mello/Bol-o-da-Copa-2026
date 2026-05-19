@@ -451,7 +451,7 @@ const horarioLimite = new Date(
    ${inputsOuPlacar}
 
 ${
-  usuario?.is_admin
+  true
     ? `
       <button
         class="btn-danger"
