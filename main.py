@@ -66,7 +66,10 @@ security = HTTPBearer()
  
 def get_db():
     """Abre conexão com o banco PostgreSQL."""
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = psycopg2.connect(
+    DATABASE_URL,
+    sslmode="require"
+)
     conn.cursor_factory = psycopg2.extras.RealDictCursor  # Retorna dicionários
     return conn
  
@@ -803,7 +806,7 @@ if __name__ == "__main__":
     import uvicorn
  
     uvicorn.run(
-        "main-corrigido:app",
+        "main:app",
         host="0.0.0.0",
         port=int(os.getenv("PORT", 8000)),
         reload=True
