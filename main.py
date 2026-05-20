@@ -49,7 +49,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Em produção, troque "*" pelo seu domínio real
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://bolao-copa-43bn.onrender.com"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
