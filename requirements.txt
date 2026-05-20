@@ -3,3 +3,5 @@ uvicorn
 python-jose
 pydantic
 python-multipart
+jinja2
+aiofiles
