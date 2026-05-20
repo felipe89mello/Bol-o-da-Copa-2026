@@ -5,7 +5,7 @@
    Durante desenvolvimento local: http://localhost:8000
    Em produção: https://seu-app.railway.app
 ══════════════════════════════════════════ */
-const API = "http://127.0.0.1:8000"; // ajuste automático para produção
+const API = "https://bolao-copa-43bn.onrender.com"; // ajuste automático para produção
 
 /* ══════════════════════════════════════════
    ESTADO DA APLICAÇÃO
