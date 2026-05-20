@@ -305,6 +305,30 @@ def login(dados: LoginInput):
     "is_admin": bool(usuario["is_admin"])
 }
 
+@app.post("/tornar-admin")
+def tornar_admin(email: str):
+    conn = get_db()
+
+    cursor = conn.execute("""
+        UPDATE usuarios
+        SET is_admin = 1
+        WHERE email = ?
+    """, (email,))
+
+    conn.commit()
+    conn.close()
+
+    if cursor.rowcount == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuário não encontrado"
+        )
+
+    return {
+        "ok": True,
+        "mensagem": f"{email} agora é admin"
+    }
+
 @app.post("/recuperar-senha")
 def recuperar_senha(email: str):
 
