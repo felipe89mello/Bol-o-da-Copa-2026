@@ -79,6 +79,7 @@ def criar_tabelas():
             email       TEXT UNIQUE NOT NULL,
             senha_hash  TEXT NOT NULL,
             is_admin    INTEGER DEFAULT 0,  -- 1 = administrador
+            codigo_reset TEXT DEFAULT NULL           
             criado_em   TEXT DEFAULT (datetime('now'))
         );
 
