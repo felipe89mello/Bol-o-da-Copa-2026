@@ -28,6 +28,7 @@ import hashlib
 from jose import jwt
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+import random
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import os
@@ -79,7 +80,7 @@ def criar_tabelas():
             email       TEXT UNIQUE NOT NULL,
             senha_hash  TEXT NOT NULL,
             is_admin    INTEGER DEFAULT 0,  -- 1 = administrador
-            codigo_reset TEXT DEFAULT NULL           
+            codigo_reset TEXT DEFAULT NULL,           
             criado_em   TEXT DEFAULT (datetime('now'))
         );
 
@@ -304,6 +305,83 @@ def login(dados: LoginInput):
     "is_admin": bool(usuario["is_admin"])
 }
 
+@app.post("/recuperar-senha")
+def recuperar_senha(email: str):
+
+    conn = get_db()
+
+    usuario = conn.execute("""
+        SELECT *
+        FROM usuarios
+        WHERE email = ?
+    """, (email,)).fetchone()
+
+    if not usuario:
+        return {"ok": True}
+
+    codigo = str(random.randint(100000, 999999))
+
+    conn.execute("""
+        UPDATE usuarios
+        SET codigo_reset = ?
+        WHERE id = ?
+    """, (
+        codigo,
+        usuario["id"]
+    ))
+
+    conn.commit()
+    conn.close()
+
+    print("Código de recuperação:", codigo)
+
+    return {
+        "ok": True
+    }
+
+@app.post("/nova-senha")
+def nova_senha(
+    email: str,
+    codigo: str,
+    nova_senha: str
+):
+
+    conn = get_db()
+
+    usuario = conn.execute("""
+        SELECT *
+        FROM usuarios
+        WHERE email = ?
+        AND codigo_reset = ?
+    """, (
+        email,
+        codigo
+    )).fetchone()
+
+    if not usuario:
+        raise HTTPException(
+            status_code=400,
+            detail="Código inválido"
+        )
+
+    senha_hash = hash_senha(nova_senha)
+
+    conn.execute("""
+        UPDATE usuarios
+        SET senha_hash = ?,
+            codigo_reset = NULL
+        WHERE id = ?
+    """, (
+        senha_hash,
+        usuario["id"]
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "ok": True
+    }
 
 @app.get("/jogos")
 def listar_jogos(usuario=Depends(verificar_token)):
@@ -626,16 +704,6 @@ def ranking(usuario=Depends(verificar_token)):
     return resultado
 
 
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        "main-corrigido:app",
-        host="0.0.0.0",
-        port=int(os.getenv("PORT", 8000)),
-        reload=True
-    )
-
 @app.get("/usuario/{usuario_id}/palpites")
 def ver_palpites_usuario(
     usuario_id: int,
@@ -714,3 +782,13 @@ def ver_palpites_usuario(
         "usuario": user["nome"],
         "palpites": resultado
     }
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "main-corrigido:app",
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 8000)),
+        reload=True
+    )
