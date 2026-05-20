@@ -383,6 +383,59 @@ def nova_senha(
         "ok": True
     }
 
+@app.delete("/usuario/{usuario_id}")
+def deletar_usuario(
+    usuario_id: int,
+    usuario=Depends(verificar_token)
+):
+    conn = get_db()
+
+    # verifica admin
+    admin = conn.execute("""
+        SELECT *
+        FROM usuarios
+        WHERE id = ?
+    """, (usuario["sub"],)).fetchone()
+
+    if not admin["is_admin"]:
+        raise HTTPException(
+            status_code=403,
+            detail="Apenas admins podem deletar usuários."
+        )
+
+    # impede deletar a si mesmo
+    if int(usuario["sub"]) == usuario_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Você não pode deletar sua própria conta."
+        )
+
+    # remove palpites do usuário
+    conn.execute("""
+        DELETE FROM palpites
+        WHERE usuario_id = ?
+    """, (usuario_id,))
+
+    # remove usuário
+    cursor = conn.execute("""
+        DELETE FROM usuarios
+        WHERE id = ?
+    """, (usuario_id,))
+
+    conn.commit()
+
+    if cursor.rowcount == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuário não encontrado."
+        )
+
+    conn.close()
+
+    return {
+        "mensagem": "🗑️ Usuário deletado com sucesso!"
+    }
+
 @app.get("/jogos")
 def listar_jogos(usuario=Depends(verificar_token)):
     """
