@@ -187,12 +187,16 @@ async function carregarJogos() {
       return;
     }
 
-    const jogos = await res.json();
+    let jogos = await res.json();
+
+    // ORDENA POR DATA/HORA
+    jogos.sort((a, b) =>
+      new Date(a.data_jogo.replace(" ", "T")) -
+      new Date(b.data_jogo.replace(" ", "T"))
+    );
 
     renderizarJogos(jogos);
-
-    // 👇 FALTAVA ISSO
-    renderizarJogosAdmin(jogos);
+    
 
   } catch {
 
@@ -317,6 +321,10 @@ function renderizarJogos(jogos) {
   } else {
     jogosFiltrados = jogos.filter(j => j.encerrado);
   }
+  jogosFiltrados.sort((a, b) =>
+  new Date(a.data_jogo.replace(" ", "T")) -
+  new Date(b.data_jogo.replace(" ", "T"))
+);
 
   if (!jogosFiltrados.length) {
     container.innerHTML = `
@@ -327,12 +335,7 @@ function renderizarJogos(jogos) {
     return;
   }
 
-  // Ordena por data/hora e renderiza sem agrupar por fase
-  jogosFiltrados.sort((a, b) =>
-    new Date(a.data_jogo.replace(" ", "T")) - new Date(b.data_jogo.replace(" ", "T"))
-  );
-
-  container.innerHTML = jogosFiltrados.map(jogo => renderizarJogo(jogo)).join("");
+    container.innerHTML = jogosFiltrados.map(jogo => renderizarJogo(jogo)).join("");
 }
 
 function renderizarJogo(jogo) {
