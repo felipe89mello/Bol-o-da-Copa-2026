@@ -327,49 +327,12 @@ function renderizarJogos(jogos) {
     return;
   }
 
-  // AGRUPAR POR FASE
-  const fases = {};
+  // Ordena por data/hora e renderiza sem agrupar por fase
+  jogosFiltrados.sort((a, b) =>
+    new Date(a.data_jogo.replace(" ", "T")) - new Date(b.data_jogo.replace(" ", "T"))
+  );
 
-  jogosFiltrados.forEach(j => {
-    if (!fases[j.fase]) {
-      fases[j.fase] = [];
-    }
-
-    fases[j.fase].push(j);
-  });
-
-  // Ordena jogos por data/hora dentro de cada fase
-  Object.values(fases).forEach(lista => {
-    lista.sort((a, b) =>
-      new Date(a.data_jogo.replace(" ", "T")) - new Date(b.data_jogo.replace(" ", "T"))
-    );
-  });
-
-  // Ordena fases na sequência correta da copa
-  const ordemFases = [
-    "Grupos","Grupo A","Grupo B","Grupo C","Grupo D",
-    "Grupo E","Grupo F","Grupo G","Grupo H",
-    "Oitavas","Quartas","Semifinal","Semi","3º Lugar","Final"
-  ];
-
-  const fasesOrdenadas = Object.entries(fases).sort(([a], [b]) => {
-    const ia = ordemFases.indexOf(a);
-    const ib = ordemFases.indexOf(b);
-    if (ia === -1 && ib === -1) return a.localeCompare(b);
-    if (ia === -1) return 1;
-    if (ib === -1) return -1;
-    return ia - ib;
-  });
-
-  container.innerHTML = fasesOrdenadas
-    .map(([fase, lista]) => `
-      <p class="secao-titulo" style="margin-top:16px">
-        ${fase}
-      </p>
-
-      ${lista.map(jogo => renderizarJogo(jogo)).join("")}
-    `)
-    .join("");
+  container.innerHTML = jogosFiltrados.map(jogo => renderizarJogo(jogo)).join("");
 }
 
 function renderizarJogo(jogo) {
