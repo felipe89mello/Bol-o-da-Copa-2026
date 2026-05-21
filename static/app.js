@@ -920,10 +920,7 @@ function abrirModalEditar(id, timeCasa, timeFora, dataJogo, fase) {
 
   const dataFormatada = dataJogo.replace(" ", "T");
 
-  const fasesOpcoes = [
-    "Grupo A","Grupo B","Grupo C","Grupo D","Grupo E","Grupo F",
-    "Grupo G","Grupo H","Grupo I","Grupo J","Grupo K","Grupo L",
-    "Segunda Fase","Oitavas","Quartas","Semifinal","Final"
+  const fasesOpcoes = ["Fase de Grupos","Segunda Fase","Oitavas","Quartas","Semifinal","Final"
   ].map(f => `<option value="${f}" ${f === fase ? 'selected' : ''}>${f}</option>`).join("");
 
   document.getElementById("modal-conteudo").innerHTML = `
