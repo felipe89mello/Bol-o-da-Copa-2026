@@ -205,36 +205,39 @@ def calcular_pontos(
     palpite_casa: int, palpite_fora: int,
     real_casa: int, real_fora: int
 ) -> int:
-    """
-    Regras de pontuação:
-      10 pts → Placar exato
-       5 pts → Acertou o vencedor E a diferença de gols
-       3 pts → Acertou apenas o vencedor (ou empate)
-       0 pts → Errou tudo
-    """
+
+    # 10 pontos → placar exato
     if palpite_casa == real_casa and palpite_fora == real_fora:
         return 10
- 
-    diff_palpite = palpite_casa - palpite_fora
-    diff_real = real_casa - real_fora
- 
-    if diff_palpite == diff_real:
-        return 5
- 
+
     vencedor_palpite = (
         "casa" if palpite_casa > palpite_fora
         else "fora" if palpite_fora > palpite_casa
         else "empate"
     )
+
     vencedor_real = (
         "casa" if real_casa > real_fora
         else "fora" if real_fora > real_casa
         else "empate"
     )
- 
+
+    # 5 pontos → acertou vencedor E diferença de gols
+    # MAS não pode ser empate
+    diff_palpite = palpite_casa - palpite_fora
+    diff_real = real_casa - real_fora
+
+    if (
+        vencedor_real != "empate"
+        and vencedor_palpite == vencedor_real
+        and diff_palpite == diff_real
+    ):
+        return 5
+
+    # 3 pontos → acertou vencedor ou empate
     if vencedor_palpite == vencedor_real:
         return 3
- 
+
     return 0
  
  
